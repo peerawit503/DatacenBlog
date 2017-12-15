@@ -1,0 +1,58 @@
+﻿@*@model IEnumerable<DsBlog.Models.Post>*@
+@using Microsoft.AspNet.Identity
+@model dynamic  
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+@{
+    ViewBag.Title = "Index";
+}
+<header class="w3-container w3-center w3-padding-32">
+    <h1><b>Question-Answer BLOG</b></h1>
+    <p>Welcome to the blog of <span class="w3-tag">Tour And Team</span></p>
+</header>
+
+
+<div class="w3-row">
+    <div class="w3-col l8 s12">
+
+                @foreach (var post in Model.Posts)
+            {
+                    <div class="w3-card-4 w3-margin w3-white">
+                        <img scr="/w3images/woods.jpg" alt="Question" style="width:100%" />
+                        <div class="w3-container"><h4>@post.Title</h4></div>
+                        <div class="w3-row">
+                            <div class="w3-container">
+                                @Html.ActionLink("See more", "Details", new { id = post.Id }) @if(User.Identity.GetUserName()=="admin@test.com"){
+                        @Html.ActionLink("Delete", "Delete", new { id = post.Id })
+                        }
+                            </div>
+                         </div>
+                        
+                    </div>
+                    <hr>
+                }
+        </div>
+    <div class="w3-col l4">
+        <div class="w3-card w3-margin">
+            <div class="w3-container w3-padding w3-black">
+                <h4>Category</h4>
+            </div>
+            <ul class="w3-ul w3-hoverable w3-white">
+                @foreach (var category in Model.Categories)
+                {
+                    <li class="w3-padding-16">
+                        <span class="w3-large">@category.Name</span>
+                        <div style="right:0">@Html.ActionLink("Show all", "Details", "Categories", new { id = category.Id }, "")</div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
+<style>
+  
+</style>
+<footer class="w3-container w3-dark-grey w3-padding-32 w3-margin-top">
+    
+</footer>

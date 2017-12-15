@@ -1,0 +1,93 @@
+﻿@model DsBlog.Models.Post
+
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Details";
+}
+
+<header>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</header>
+<div class="w3-container w3-white w3-margin w3-padding-large">
+    <div class="w3-container w3-padding w3-black">
+        <h2>QUESTION</h2>
+        </div>
+
+        <div class="w3-white w3-margin">
+            <div class="w3-center"><h3>@Html.DisplayFor(model => model.Title)</h3></div>
+
+            <div class="w3-justify"><p>@Html.DisplayFor(model => model.Detail)</p></div>
+
+
+
+        </div>
+        <div class="w3-white w3-margin">
+            <div class="w3-container w3-padding w3-black"><h4>Comments</h4></div>
+            <ul class="w3-ul w3-hoverable w3-white">
+                @{ 
+                    int x = 1;
+                }
+                @foreach (var item in Model.Comments)
+                { 
+
+                    if (item.PostId == Model.Id)
+                    {
+                        <li class="w3-padding-16">
+                            <h5 style="text-decoration: underline;">
+                                @Html.DisplayFor(modelItem => item.By)
+                            </h5>
+
+                            <h6>@Html.DisplayFor(modelItem => item.Detail)</h6>
+                            @Html.ActionLink("Delete", "Delete","Comments", new { id = item.Id },null )
+                        </li>
+                       
+                            x = 2;
+                        
+
+                    }
+
+
+                }
+                @if (x == 1)
+                {
+                    <li class="w3-padding-16">
+                        <h6>No comment</h6>
+                    </li>
+                }
+
+
+            </ul>
+            <hr />
+            @if (Request.IsAuthenticated)
+            {
+                <div class="w3-container w3-black">
+                    <h4>Comment</h4>
+                    <br />
+                    @{
+                        ViewBag.Title = "Create";
+                    }
+
+
+                    @using (Html.BeginForm("CreateInPost", "Comments", FormMethod.Get))
+                    {
+                        @Html.TextArea("Detail", "", new { @class = "form-control" })
+                        @Html.Hidden("By", User.Identity.Name)
+                        @Html.Hidden("PostId", Model.Id)
+                        <br />
+
+                        <input type="submit" value="Create" class="btn btn-default" />
+
+                    }
+                </div>
+                        }
+                        else
+                        {
+                            <p>Please login to comment !</p>
+                        }
+        </div>
+
+
+    </div>
+
+
+
